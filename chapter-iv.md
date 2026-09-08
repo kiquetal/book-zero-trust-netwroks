@@ -31,6 +31,8 @@ graph TD
     Enforcer -- "Allow/Deny/Route" --> TrafficOut[Destination]
 ```
 
+![Control Plane vs Data Plane Architecture](images/chapter-iv-figure-1.png)
+
 | Feature | Control Plane | Data Plane |
 | :--- | :--- | :--- |
 | **Primary Goal** | Decision making, configuration | Traffic handling, enforcement |
