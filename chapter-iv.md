@@ -13,15 +13,15 @@ In a Zero Trust architecture, the **Control Plane** (the "brain") makes security
 
 ```mermaid
 graph TD
-    subgraph Control_Plane [Control Plane: The "Brain"]
-        PolicyEngine[Policy Decision Point / Controller]
-        TrustEngine[Trust Engine]
-        DataStore[(Data Stores)]
+    subgraph Control_Plane ["Control Plane: The #quot;Brain#quot;"]
+        PolicyEngine["Policy Decision Point / Controller"]
+        TrustEngine["Trust Engine"]
+        DataStore[("Data Stores")]
     end
 
-    subgraph Data_Plane [Data Plane: The "Muscle"]
-        Traffic[Incoming Traffic]
-        Enforcer[Policy Enforcement Point / Proxy / Gateway]
+    subgraph Data_Plane ["Data Plane: The #quot;Muscle#quot;"]
+        Traffic["Incoming Traffic"]
+        Enforcer["Policy Enforcement Point / Proxy / Gateway"]
     end
 
     PolicyEngine -- "Pushes Policies & Configuration" --> Enforcer
