@@ -12,8 +12,8 @@ Repository for tracking learning and notes for the *Zero Trust Networks* book.
 ## Study Outline & Progress
 
 1. Zero Trust Fundamentals
-2. Managing Trust
-3. Context-Aware Agents
+2. [Managing Trust](chapter-ii.md)
+3. [Context-Aware Agents](chapter-iii.md)
 4. [Making Authorization Decisions](chapter-iv.md)
 5. Trusting Devices
 6. Trusting Identities
