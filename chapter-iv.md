@@ -14,20 +14,24 @@ The zero-trust architecture comprises 4 main components
 - **Trust Engine**: computes the **trust score** for the actors in a request using signals from the data stores (behavior history, device posture, threat intelligence). It provides context to the policy engine but does not make the final decision. This is the component that realizes the continuous trust score from earlier chapters.
 - **Data stores**: the source-of-truth inventories the system reasons over — users, devices, and their observed activity. They feed the trust engine and are queried/updated by the policy engine.
 
-```
-        Decision Flow Between the Four Components
-        -----------------------------------------
+### Critical Architectural Separation
 
-   Request --> [ Enforcement / PEP ]
-                     |  asks "may this proceed?"
-                     v
-              [ Policy Engine / PDP ] --context--> [ Trust Engine ]
-                     |                                   |
-                     | query/update                      | reads signals
-                     v                                   v
-              [ Data Stores ] <-------------------------- +
-                     |
-   Decision (allow/deny) returned to Enforcement, which acts on the traffic
+For robust security, enforcement must occur within the data plane, effectively shielding the control plane from direct traffic exposure. The Policy Engine (PDP) is the component responsible for evaluating requests against configured policies. Crucially, the enforcement layer (PEP) acts as the bridge that invokes this decision-making process. This design is critical as it maintains a clean, independent separation: the PEP intercepts and enforces, while the PDP solely focuses on decision logic.
+
+```
+        Enforcement and Policy Engine Separation
+        ----------------------------------------
+
+        [ Data Plane ]                [ Control Plane ]
+      +-----------------+           +-------------------+
+      |                 |           |                   |
+      |   Enforcement   |           |   Policy Engine   |
+      |      (PEP)      |---------->|       (PDP)       |
+      |                 |  Invoke   |                   |
+      +-----------------+           +-------------------+
+               ^
+               | Intercepts
+      [ User/Client Traffic ]
 ```
 
 ### Control Plane vs. Data Plane
