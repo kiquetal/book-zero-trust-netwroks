@@ -50,8 +50,31 @@ This chapter emphasizes that **devices are the foundational battleground for sec
 
 By splitting these responsibilities, you ensure no single compromised component—such as a stolen image or an attacker-controlled resource manager—can independently grant unauthorized access.
 
-### 4. Strategic Caution
-*   **Geopolitics:** Be wary of relying solely on external Certificate Authorities (CAs). Geopolitical tensions can impact their availability or trustworthiness, as demonstrated by sanctions limiting certificate renewals.
+
+### 5. Authenticating Devices with the Control Plane
+
+To validate device identity over a network, Zero Trust relies on robust open standards and hardware-backed security.
+
+#### X.509: The Identity Standard
+**X.509** defines the format for public key certificates and validation methods for certification chains.
+*   **Certificate Authorities (CA) & PKI:** A **CA** endorses certificate validity via digital signatures. Trusting the CA implies trusting all certificates in the resulting chain. A **Registration Authority (RA)** ensures details are accurate before signing.
+*   **Asymmetric Cryptography:** X.509 utilizes a public/private key pair. The owner proves identity by performing cryptographic operations that only their private key can produce.
+*   **Limitations:** While useful for metadata (via extensions) and enabling encrypted communication, the **private key** is often software-based, making it vulnerable to theft if stored on a disk.
+
+#### HSMs & TPMs
+**Hardware Security Modules (HSMs)** and **Trusted Platform Modules (TPMs)**—specialized cryptoprocessors—are the solution to protecting private keys.
+*   **TPM Functionality:** A TPM generates and stores a **Storage Root Key (SRK)**, which is the trust root. By using the SRK to wrap symmetric keys (like **AES**—Advanced Encryption Standard), data can be "bound" to the hardware, ensuring it is only decryptable on the originating device.
+*   **Platform Configuration Registers (PCRs):** PCRs store hashes of system states (BIOS, boot records). Data can be **"sealed"** to specific PCR values, ensuring sensitive keys are only unlocked when the system is in a known, approved configuration.
+*   **Remote Attestation:** Using the unique **Endorsement Key (EK)** and signed quotes of current PCRs, a TPM can prove both host identity and software state to a remote party.
+
+#### Security Risks and Mitigations
+Despite hardware protections, TPMs/HSMs are susceptible to sophisticated attack vectors:
+*   **Attacks:** **ROCA**, **Side-Channel** attacks, and **Fault Injection** can bypass security by targeting shared secrets or exploiting physical/mathematical vulnerabilities.
+*   **Mitigations:** Protection strategies include **Confidential Computing**, **Secure Boot**, regular patching, independent audits, and physical/logical security measures.
+
+#### Supporting Legacy Devices
+For legacy infrastructure that cannot host modern security agents, we move the Zero Trust termination point as close to the device as possible:
+*   **Hardware Supplicant:** Instead of an application proxy, use a dedicated hardware device equipped with a TPM chip that plugs directly into the legacy host (e.g., **SCADA** or **HVAC** systems) to act as a secure Zero Trust supplicant.
 
 
 
