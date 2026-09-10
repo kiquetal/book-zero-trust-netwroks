@@ -63,7 +63,7 @@ To validate device identity over a network, Zero Trust relies on robust open sta
 
 #### HSMs & TPMs
 **Hardware Security Modules (HSMs)** and **Trusted Platform Modules (TPMs)**—specialized cryptoprocessors—are the solution to protecting private keys.
-*   **TPM Functionality:** A TPM generates and stores a **Storage Root Key (SRK)**, which is the trust root. By using the SRK to wrap symmetric keys (like **AES**—Advanced Encryption Standard), data can be "bound" to the hardware, ensuring it is only decryptable on the originating device.
+*   **TPM Functionality:** A TPM generates and stores a **Storage Root Key (SRK)**, which serves as the trust root. To secure large volumes of data efficiently, TPMs employ **envelope encryption**: bulk data is encrypted using a performant symmetric key (e.g., **AES**—Advanced Encryption Standard), which is then "wrapped" (encrypted) by the SRK. This binds the data to the specific hardware TPM, ensuring it can only be decrypted by the device that originally protected it.
 *   **Platform Configuration Registers (PCRs):** PCRs store hashes of system states (BIOS, boot records). Data can be **"sealed"** to specific PCR values, ensuring sensitive keys are only unlocked when the system is in a known, approved configuration.
 *   **Remote Attestation:** Using the unique **Endorsement Key (EK)** and signed quotes of current PCRs, a TPM can prove both host identity and software state to a remote party.
 
